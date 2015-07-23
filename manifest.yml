@@ -1,0 +1,16 @@
+---
+language: binary
+
+exclude_files:
+  - .git/
+  - .gitignore
+  - .gitmodules
+  - .rspec
+  - log/
+  - test/
+  - buildpack-packager/
+  - erlang_buildpack-*v*.zip
+
+url_to_dependency_map: []
+
+dependencies: []
