@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
 # bin/release <build-dir>
 
-echo -e "---\ndefault_process_types:\n  web: exit 1"
+BUILD_DIR=$1
+
+NODE_NAME=`grep -E "{drm_node,.*}" $BUILD_DIR/sys.config | grep -Eo "[a-z0-9_]*@" | tr -d @`
+#IP=`ip a | grep "inet 10.*" | awk '{print $2}' | cut -d\/ -f1 | head -n1`
+IP=${IP:-127.0.0.1}
+#sed -i "s/${NODE_NAME}@127.0.0.1/${NODE_NAME}@${IP}/g" $BUILD_DIR/sys.config
+
+echo -e "---\ndefault_process_types:\n  web: ./bin/erl -name '${NODE_NAME}@${IP}' -boot releases/1.0/start -config sys -boot_var PATH lib -noshell"

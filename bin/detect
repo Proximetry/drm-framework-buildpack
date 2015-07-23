@@ -1,2 +1,10 @@
 #! /bin/sh
-exit 1
+
+BUILD_DIR=$1
+# this pack is valid for apps with a drm.sh in the root
+if [ -f $BUILD_DIR/drm.sh ]; then
+    echo "DRM framework"
+    exit 0
+else
+    exit 1
+fi

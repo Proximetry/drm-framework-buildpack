@@ -1,2 +1,9 @@
 #! /bin/sh
+
+BUILD_DIR=$1
+ERL=${BUILD_DIR}/bin/erl
+
+sed -i 's/^ROOTDIR=.*$/ROOTDIR=\"\/home\/vcap\/app\"/g' $ERL
+sed -i 's/^BINDIR=.*$/BINDIR=$ROOTDIR\/bin/g' $ERL
+
 exit 0
