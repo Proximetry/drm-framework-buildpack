@@ -3,7 +3,7 @@
 BUILD_DIR=$1
 ERL=${BUILD_DIR}/bin/erl
 
-sed -i 's/^ROOTDIR=.*$/ROOTDIR=\"\/home\/vcap\/app\"/g' $ERL
+sed -i 's/^ROOTDIR=.*$/ROOTDIR=$HOME/g' $ERL
 sed -i 's/^BINDIR=.*$/BINDIR=$ROOTDIR\/bin/g' $ERL
 
 sed -i "/java.*@127.0.0.1/d" $BUILD_DIR/sys.config
