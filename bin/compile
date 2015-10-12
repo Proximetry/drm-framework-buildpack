@@ -6,6 +6,9 @@ ERL=${BUILD_DIR}/bin/erl
 sed -i 's/^ROOTDIR=.*$/ROOTDIR=$HOME/g' $ERL
 sed -i 's/^BINDIR=.*$/BINDIR=$ROOTDIR\/bin/g' $ERL
 
-sed -i "/java.*@127.0.0.1/d" $BUILD_DIR/sys.config
+sed -i '/java.*@127.0.0.1/d' $BUILD_DIR/sys.config
+
+cp $BUILD_DIR/log.config.debug $BUILD_DIR/log.config
+sed -i 's/{options, []}/{options, [{log_to_stdout, true}]}/g' $BUILD_DIR/log.config
 
 exit 0
