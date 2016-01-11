@@ -1,18 +1,37 @@
-#! /bin/sh
+#! /bin/bash
 
 BUILD_DIR=$1
 ERL=${BUILD_DIR}/bin/erl
 
+echo "-----> Configure app"
+
+echo "       Configure EVM"
 sed -i 's/^ROOTDIR=.*$/ROOTDIR=$HOME/g' $ERL
 sed -i 's/^BINDIR=.*$/BINDIR=$ROOTDIR\/bin/g' $ERL
 
 sed -i '/java.*@127.0.0.1/d' $BUILD_DIR/sys.config
 
+
+echo "       Configure logging"
 # change 'options, []' to 'options, [\n]'
 sed -i 's/options, \[\ *\]/options, \[\r\n        \]/g' $BUILD_DIR/log.config
 # add {log_to_stdout, true} to log.config options
 sed -i '/options, \[/a\            \{log_to_stdout, true\}' $BUILD_DIR/log.config
 # add comma if {log_to_stdout, true} is not the last entry within options (there exists next line with option or comment after {log_to_stdout, true})
 sed -i '/{log_to_stdout, true}/{N; s/\({log_to_stdout, true}\)\n\(\ *[{%].*\)/\1,\n\2/}' $BUILD_DIR/log.config
+
+cd $BUILD_DIR 
+if [[ -n $BUILDPACK_SCRIPT ]]; then 
+	echo "       Run custom script"
+	echo "$BUILDPACK_SCRIPT" | while read line; do
+		echo "       > $line"
+		eval $line
+		if [[ $? -ne 0 ]]; then 
+			echo "      error"
+			exit 1
+		fi
+	done
+fi
+cd $PWD
 
 exit 0
