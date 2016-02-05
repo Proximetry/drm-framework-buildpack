@@ -23,7 +23,7 @@ sed -i '/{log_to_stdout, true}/{N; s/\({log_to_stdout, true}\)\n\(\ *[{%].*\)/\1
 cd $BUILD_DIR 
 if [[ -n $BUILDPACK_SCRIPT ]]; then 
 	echo "       Run custom script"
-	echo "$BUILDPACK_SCRIPT" | while read line; do
+	echo "$BUILDPACK_SCRIPT" | while read -r line; do
 		echo "       > $line"
 		eval $line
 		if [[ $? -ne 0 ]]; then 
